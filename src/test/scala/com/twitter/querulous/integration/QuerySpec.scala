@@ -2,9 +2,11 @@ package com.twitter.querulous.integration
 
 import org.specs.Specification
 import net.lag.configgy.Configgy
+/*
 import com.twitter.xrayspecs.Time
 import com.twitter.xrayspecs.TimeConversions._
 import com.twitter.querulous.database.ApachePoolingDatabaseFactory
+*/
 import com.twitter.querulous.query._
 import com.twitter.querulous.evaluator.{StandardQueryEvaluatorFactory, QueryEvaluator}
 
@@ -12,7 +14,8 @@ import com.twitter.querulous.evaluator.{StandardQueryEvaluatorFactory, QueryEval
 class QuerySpec extends Specification {
   Configgy.configure("config/" + System.getProperty("stage", "test") + ".conf")
 
-  import TestEvaluator._
+  import com.twitter.querulous.TestEvaluator._
+
   "Query" should {
     val queryEvaluator = testEvaluatorFactory("org.hsqldb.jdbcDriver", "jdbc:hsqldb:mem:querulous", "sa", "")
 
@@ -35,5 +38,6 @@ class QuerySpec extends Specification {
     doAfter {
       queryEvaluator.execute("DROP TABLE foo")
     }
+    ()
   }
 }

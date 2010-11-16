@@ -11,11 +11,12 @@ import com.twitter.xrayspecs.Time
 import com.twitter.xrayspecs.TimeConversions._
 import org.specs.Specification
 import org.specs.mock.{ClassMocker, JMocker}
+import com.twitter.querulous.StatsCollector
 
 
 class QueryEvaluatorSpec extends Specification with JMocker with ClassMocker {
   Configgy.configure("config/test.conf")
-  import TestEvaluator._
+  import com.twitter.querulous.TestEvaluator._
 
   "QueryEvaluator" should {
     val queryEvaluator = testEvaluatorFactory("org.hsqldb.jdbcDriver", "jdbc:hsqldb:mem:querulous", "sa", "")

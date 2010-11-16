@@ -12,7 +12,7 @@ import com.twitter.querulous.evaluator.{StandardQueryEvaluatorFactory, QueryEval
 class TimeoutSpec extends Specification {
   Configgy.configure("config/test.conf")
 
-  import TestEvaluator._
+  import com.twitter.querulous.TestEvaluator._
 
   val config = Configgy.config.configMap("db")
   val username = config("username")
@@ -52,5 +52,6 @@ class TimeoutSpec extends Specification {
 //      thread.interrupt()
 //      thread.join()
 //    }
+    ()
   }
 }
