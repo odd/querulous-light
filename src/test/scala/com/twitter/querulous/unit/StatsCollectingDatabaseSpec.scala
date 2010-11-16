@@ -1,5 +1,6 @@
 package com.twitter.querulous.unit
 
+/*
 import scala.collection.mutable.Map
 import java.sql.Connection
 import org.specs.Specification
@@ -31,3 +32,4 @@ class StatsCollectingDatabaseSpec extends Specification with JMocker with ClassM
     }
   }
 }
+*/

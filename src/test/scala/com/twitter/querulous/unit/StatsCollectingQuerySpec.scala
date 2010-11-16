@@ -1,5 +1,6 @@
 package com.twitter.querulous.unit
 
+/*
 import java.sql.ResultSet
 import org.specs.Specification
 import org.specs.mock.JMocker
@@ -31,4 +32,5 @@ class StatsCollectingQuerySpec extends Specification with JMocker {
     }
   }
 }
+*/
 

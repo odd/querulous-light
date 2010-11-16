@@ -1,5 +1,6 @@
 package com.twitter.querulous.unit
 
+/*
 import java.sql.ResultSet
 import org.specs.Specification
 import org.specs.mock.{ClassMocker, JMocker}
@@ -51,4 +52,4 @@ class TimingOutStatsCollectingQuerySpec extends Specification with JMocker {
     }
   }
 }
-
+*/
