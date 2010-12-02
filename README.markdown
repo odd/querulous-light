@@ -7,7 +7,9 @@ This is a fork of Querulous-generic (Querulous-generic is in turn a fork of the 
 
 * Work on Scala 2.8
 * Work on all RDBMs (Well, I've only tried H2, so I do not really know)
-* The more advanced features (timeout and so on) probably don't work.
+* Not have any dependencies to Twitters StandardProject module.
+
+The more advanced features (timeout and so on) probably don't work, since I had to smash some code to get here.
 
 ## License
 
@@ -66,57 +68,6 @@ Run a query in a transaction for enhanced pleasure:
     }
 
 The yielded transaction object implements the same interface as QueryEvaluator. Note that the transaction will be rolled back if you raise an exception.
-
-### Advanced Usage
-
-For production-quality use of `Querulous` you'll want to set configuration options and layer-on more functionality. Here is the maximally configurable, if somewhat elaborate, way to instantiate a QueryEvaluator
-
-    import com.twitter.querulous.evaluator._
-    import com.twitter.querulous.query._
-    import com.twitter.querulous.database._
-
-    val queryFactory = new SqlQueryFactory
-    val apachePoolingDatabaseFactory = new apachePoolingDatabaseFactory(
-	  validationQuery:                    String,   // query which is executed to check health of open connections	
-      minOpenConnections:                 Int,      // minimum number of open/active connections at all times
-      maxOpenConnections:                 Int,      // minimum number of open/active connections at all times
-      checkConnectionHealthWhenIdleFor:   Duration, // asynchronously check the health of open connections every `checkConnectionHealthWhenIdleFor` amount of time
-      maxWaitForConnectionReservation:    Duration, // maximum amount of time you're willing to wait to reserve a connection from the pool; throw an exception otherwise
-      checkConnectionHealthOnReservation: Boolean,  // check connection health when reserving the connection from the pool
-      evictConnectionIfIdleFor:           Duration  // destroy connections if they are idle for longer than `evictConnectionIfIdleFor` amount of time
-    )
-    val queryEvaluatorFactory = new StandardQueryEvaluatorFactory(apachePoolingDatabaseFactory, queryFactory)
-    val queryEvaluator = queryEvaluatorFactory("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/mydb", "username", "password")
-
-Now comes the fun part.
-
-### Recommended Configuration Options
-
-* Set minActive equal to maxActive. This ensures that the system is fully utilizing the connection resource even when the system is idle. This is good because you will not be surprised by connection usage (and e.g., unexpectedly hit server-side connection limits) during peak load.
-* Set minActive equal to maxActive equal to the MySql connection limit divided by the number of instances of your client process
-* Set testIdle to 1.second or so. It should be substantially less than the server-side connection timeout.
-* Set maxWait to 10.millis--to start. In general, it should be set to the average experienced latency plus twice the standard deviation. Gather statistics!
-* Set minEvictableIdle to 5.minutes or more. It has no effect when minActive equals maxActive, but in case these differ you don't want excessive connection churning. It should certainly be less than or equal to the server-side connection timeout.
-
-## Statistics Collection
-
-StatsCollector is actually just a trait that you'll need to implement using your favorite statistics collecting library. My favorite is [Ostrich](http://github.com/robey/ostrich) and you can write an adapter in a few lines of code. Here is one such adapter:
-
-    val stats = new StatsCollector {
-      def incr(name: String, count: Int) = Stats.incr(name, count)
-      def time[A](name: String)(f: => A): A = Stats.time(name)(f)
-    }
-    val databaseFactory = new StatsCollectingDatabaseFactory(new ApachePoolingDatabaseFactory(...), stats)
-
-## Installation
-
-Checkout source, run `ant`, then if all goes well, copy dist/querulous-xxxx.jar into your project's classpath.
-
-## Running Tests
-
-From the command line, simply run:
-
-    % ant test
 
 ## Reporting problems
 
