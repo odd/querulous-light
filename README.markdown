@@ -1,6 +1,10 @@
-# Querulous (vanilla JDBC fork)
+# Querulous-Light (vanilla JDBC fork)
 
 An agreeable way to talk to your database.
+
+Note: This is Olles fork of Querulous-generic (in turn a fork of the Twitter verion). This fork will:
+* Work on Scala 2.8
+* Work on other DBs than MySQL (I use H2)
 
 ## License
 
@@ -82,46 +86,6 @@ For production-quality use of `Querulous` you'll want to set configuration optio
     val queryEvaluator = queryEvaluatorFactory("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/mydb", "username", "password")
 
 Now comes the fun part.
-
-#### Query Decorators
-
-Suppose you want timeouts around queries:
-
-    val queryFactory = new TimingOutQueryFactory(new SqlQueryFactory, 3.seconds)
-
-Suppose you ALSO want to retry queries up to 5 times:
-
-    val queryFactory = new RetryingQueryFactory(new TimingOutQueryFactory(new SqlQueryFactory, 3000.millis), 5)
-
-Suppose you have no idea what's going on and need some debug info:
-
-    val queryFactory = new DebuggingQueryFactory(new RetryingQueryFactory(new TimingOutQueryFactory(new SqlQueryFactory, 3.seconds), 5), println)
-
-You'll notice, at this point, that all of these advanced features can be layered-on by composing QueryFactories. In what follows, I'll omit some layering to keep the examples terse.
-
-Suppose you want to measure average and standard deviation of latency, and query counts:
-
-    val stats = new StatsCollector
-    val queryFactory = new StatsCollectingQueryFactory(new SqlQueryFactory, stats)
-
-See the section [Statistics Collection] for more information.
-
-#### Database Decorators
-
-Suppose you want to measure latency around the reserve/release operations of the Database:
-
-    val stats = new StatsCollector
-    val databaseFactory = new StatsCollectingDatabase(new ApachePoolingDatabaseFactory(...), stats)
-
-Suppose you are actually dynamically connecting to dozens of hosts (because of a sharding strategy or something similar) and you want to maintain proper connection limits. You can memoize your database connections like this:
-
-    val databaseFactory = new MemoizingDatabaseFactory(new ApachePoolingDatabaseFactory(...))
-
-#### QueryEvaluator Decorators
-
-Suppose you want to automatically disable all connections to a particular host after a certain number of SQL Exceptions (timeouts, etc.):
-
-    val queryEvaluatorFactory = new AutoDisablingQueryEvaluatorFactory(new StandardQueryEvaluatorFactory(databaseFactory, queryFactory))
 
 ### Recommended Configuration Options
 
