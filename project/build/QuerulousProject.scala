@@ -2,12 +2,13 @@ import sbt._
 import com.twitter.sbt.StandardProject
 
 
-class QuerulousProject(info: ProjectInfo) extends StandardProject(info) {
+//class QuerulousProject(info: ProjectInfo) extends StandardProject(info) {
+class QuerulousProject(info: ProjectInfo) extends DefaultProject(info) {
   // Repository
   val twitterRepo = "T repo" at "http://maven.twttr.com/"
 
   val specs     = "org.scala-tools.testing" % "specs_2.8.0" % "1.6.5"
-  val configgy  = "net.lag" % "configgy" % "1.5.5"
+  val configgy  = "net.lag" % "configgy" % "2.0.0"
   val asm       = "asm" % "asm" %  "1.5.3"
   val cglib     = "cglib" % "cglib" % "2.1_3"
   val dbcp      = "commons-dbcp" % "commons-dbcp" % "1.2.2"
@@ -21,13 +22,31 @@ class QuerulousProject(info: ProjectInfo) extends StandardProject(info) {
   val ScalaToolsSnap = ScalaToolsSnapshots
   val bumSnapsRepo = "Bum Networks Snapshots Repository" at "http://repo.bumnetworks.com/snapshots/"
   val mavenLocal = "Local Mavem" at "file://" + Path.userHome + "/.m2/repository"
+
+  // ------------------------------------------------------------
+  // publishing
+  // ------------------------------------------------------------
+  override def managedStyle = ManagedStyle.Maven
+  val publishTo = Resolver.file("shared-repo", Path.userHome / "traveas-repository" / "m2" asFile)
+
+  val sourceArtifact = Artifact(artifactID, "src", "jar", Some("sources"), Nil, None)
+
+  override def packageDocsJar = defaultJarPath("-javadoc.jar")
+  override def packageSrcJar= defaultJarPath("-sources.jar")
+  override def packageToPublishActions = super.packageToPublishActions ++ Seq(packageDocs, packageSrc)
+
   override def pomExtra =
+    <inceptionYear>2010</inceptionYear>
+    <url>http://www.traveas.com</url>
+    <organization>
+      <name>Traveas AB</name>
+      <url>http://www.traveas.com</url>
+    </organization>
     <licenses>
       <license>
-        <name>Apache 2</name>
-        <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        <name>Private</name>
         <distribution>repo</distribution>
       </license>
     </licenses>
-  val publishTo = Resolver.sftp("green.lag.net", "green.lag.net", "/web/repo")
+
 }
