@@ -2,9 +2,12 @@
 
 An agreeable way to talk to your database.
 
-Note: This is Olles fork of Querulous-generic (in turn a fork of the Twitter verion). This fork will:
+## Note about this Fork
+This is a fork of Querulous-generic (Querulous-generic is in turn a fork of the Twitter version). This fork will:
+
 * Work on Scala 2.8
-* Work on other DBs than MySQL (I use H2)
+* Work on all RDBMs (Well, I've only tried H2, so I do not really know)
+* The more advanced features (timeout and so on) probably don't work.
 
 ## License
 
