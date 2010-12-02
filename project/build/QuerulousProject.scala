@@ -27,7 +27,7 @@ class QuerulousProject(info: ProjectInfo) extends DefaultProject(info) {
   // publishing
   // ------------------------------------------------------------
   override def managedStyle = ManagedStyle.Maven
-  val publishTo = Resolver.file("shared-repo", Path.userHome / "traveas-repository" / "m2" asFile)
+  val publishTo = Resolver.file("shared-repo", Path.userHome / "artifact-repository" / "m2" asFile)
 
   val sourceArtifact = Artifact(artifactID, "src", "jar", Some("sources"), Nil, None)
 
