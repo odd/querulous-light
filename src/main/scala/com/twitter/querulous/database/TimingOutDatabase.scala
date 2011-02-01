@@ -4,7 +4,7 @@ package database
 import java.sql.{Connection, SQLException}
 import java.util.concurrent.{TimeoutException => JTimeoutException, _}
 import com.twitter.xrayspecs.Duration
-import net.lag.logging.Logger
+// import net.lag.logging.Logger
 
 
 class SqlDatabaseTimeoutException(msg: String) extends SQLException(msg)
@@ -17,7 +17,7 @@ class TimingOutDatabaseFactory(databaseFactory: DatabaseFactory, poolSize: Int, 
 
 class TimingOutDatabase(database: Database, jdbcDriver: String, jdbcUrl: String, poolSize: Int, queueSize: Int, openTimeout: Duration, initialTimeout: Duration, maxConnections: Int) extends Database {
   private val timeout = new FutureTimeout(poolSize, queueSize)
-  private val log = Logger.get(getClass.getName)
+  // private val log = Logger.get(getClass.getName)
 
   // FIXME not working yet.
   //greedilyInstantiateConnections()
@@ -36,7 +36,7 @@ class TimingOutDatabase(database: Database, jdbcDriver: String, jdbcUrl: String,
   }
 
   private def greedilyInstantiateConnections() = {
-    log.info("Connecting to %s", jdbcUrl)
+    // log.info("Connecting to %s", jdbcUrl)
     (0 until maxConnections).map { i =>
       getConnection(initialTimeout)
     }.map(_.close)

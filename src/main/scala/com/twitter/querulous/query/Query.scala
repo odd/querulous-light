@@ -6,7 +6,7 @@ import scala.collection.mutable
 import com.twitter.xrayspecs.Duration
 import com.twitter.xrayspecs.TimeConversions._
 import net.lag.configgy.ConfigMap
-import net.lag.logging.Logger
+//import net.lag.logging.Logger  // No logging
 
 
 trait QueryFactory {
@@ -60,8 +60,9 @@ object QueryFactory {
       queryFactory = new RetryingQueryFactory(queryFactory, retries)
     }
     if (config.getBool("debug", false)) {
-      val log = Logger.get(getClass.getName)
-      queryFactory = new DebuggingQueryFactory(queryFactory, { s => log.debug(s) })
+      // No logging
+      //val log = Logger.get(getClass.getName)
+      //queryFactory = new DebuggingQueryFactory(queryFactory, { s => log.debug(s) })
     }
     queryFactory
   }
