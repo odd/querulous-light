@@ -11,7 +11,8 @@ class QuerulousProject(info: ProjectInfo) extends DefaultProject(info) {
 
   val specs     = "org.scala-tools.testing" % "specs_2.8.0" % "1.6.5"
   val configgy  = "net.lag" % "configgy" % "2.0.2-nologgy"
-  val asm       = "asm" % "asm" %  "1.5.3"
+  //val asm       = "asm" % "asm" %  "1.5.3"
+  val asm       = "asm" % "asm" %  "3.2"
   val cglib     = "cglib" % "cglib" % "2.1_3"
   val dbcp      = "commons-dbcp" % "commons-dbcp" % "1.2.2"
   val hamcrest  = "org.hamcrest" % "hamcrest-all" % "1.1"
